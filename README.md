@@ -184,8 +184,8 @@ This project is licensed under the [MIT License](./LICENSE).
 
 For feedback, issues, or contributions:
 
-- ✉️ Email: [yourname@example.com](mailto:prince.kumar.kuswaha2004@gmail.com)
-- 🐙 GitHub: [github.com/yourusername](https://github.com/PrinceAryann)
+- ✉️ Email: [prince.kumar.kuswaha2004@gmail.com](mailto:prince.kumar.kuswaha2004@gmail.com)
+- 🐙 GitHub: [https://github.com/PrinceAryann](https://github.com/PrinceAryann)
 
 ---
 
