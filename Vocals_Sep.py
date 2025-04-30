@@ -4,7 +4,7 @@ import torch
 
 # Set the location for pre-downloaded Demucs models to prevent re-downloading.
 # This tells PyTorch to look for models in the specified directory first.
-os.environ["TORCH_HOME"] = r"D:\ProjectAlpha\Demucs\Models"
+os.environ["TORCH_HOME"] = r"YOUR_MODEL_CACHE_DIR_PATH"  # e.g., r"C:\Path\To\Models"
 
 # Check if multiple GPUs are available
 if torch.cuda.is_available():
@@ -18,13 +18,13 @@ else:
 print(f"Using device: {device} ({num_gpus} GPUs available)")
 
 # Set Demucs path (make sure the executable is at this location)
-demucs_path = r"D:\ProjectAlpha\miniconda\envs\ProjectAlpha\Scripts\demucs.exe"
+demucs_path = r"PATH_TO_DEMUCS_EXECUTABLE"  # e.g., r"C:\Path\To\envs\YourEnv\Scripts\demucs.exe"
 
 # Enable multithreading for CPU processing
 os.environ["OMP_NUM_THREADS"] = str(os.cpu_count())  # Use all CPU cores
 
 
-def separate_audio(input_file, output_dir=r"D:\ProjectAlpha\Demucs\Output\Shift-over", model="htdemucs"):
+def separate_audio(input_file, output_dir=r"OUTPUT_DIRECTORY", model="htdemucs"):
     """
     Uses Demucs to separate vocals from background music and effects, utilizing all available resources.
     
@@ -41,7 +41,7 @@ def separate_audio(input_file, output_dir=r"D:\ProjectAlpha\Demucs\Output\Shift-
             print(f"Error: Input file '{input_file}' does not exist!")
             return
 
-        print(f"Processing: {input_file}")  # Placeholder for actual processing
+        print(f"Processing: {input_file}")
 
         # Set the number of shifts (use only if GPU is available)
         SHIFTS = 5 if device == "cuda" else 1  # Avoid using shifts on CPU
@@ -49,15 +49,15 @@ def separate_audio(input_file, output_dir=r"D:\ProjectAlpha\Demucs\Output\Shift-
         # Call Demucs to perform audio separation
         subprocess.run(
             [
-                demucs_path,  # Path to the Demucs executable
-                "-n", model,  # Model to use (e.g., htdemucs)
-                "--two-stems=vocals",  # Separate only vocals from other audio
-                '--shifts', str(SHIFTS),  # Avoid shifts on CPU
-                '--overlap', str(0.5),    # Overlap parameter (used with GPU)
-                "--device", device,  # Use CUDA if available, else CPU
-                "--jobs", str(os.cpu_count()),  # Use all CPU cores for processing
-                "--out", output_dir,  # Directory to store the separated output
-                input_file,  # Input file to process
+                demucs_path,
+                "-n", model,
+                "--two-stems=vocals",
+                '--shifts', str(SHIFTS),
+                '--overlap', str(0.5),
+                "--device", device,
+                "--jobs", str(os.cpu_count()),
+                "--out", output_dir,
+                input_file,
             ],
             check=True
         )
@@ -72,7 +72,8 @@ def separate_audio(input_file, output_dir=r"D:\ProjectAlpha\Demucs\Output\Shift-
 
 
 # Example Separation
-input_audio = [os.path.join(r"D:\ProjectAlpha\Demucs\Sample", i) for i in os.listdir(r"D:\ProjectAlpha\Demucs\Sample")]
+sample_folder = r"PATH_TO_SAMPLE_DIRECTORY"  # e.g., r"C:\Path\To\Sample"
+input_audio = [os.path.join(sample_folder, i) for i in os.listdir(sample_folder) if os.path.isfile(os.path.join(sample_folder, i))]
 
 # Ensure there's at least one file to process
 if not input_audio:
